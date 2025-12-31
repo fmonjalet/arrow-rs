@@ -56,7 +56,7 @@ pub struct GenericListTypedIter<OffsetSize: OffsetSizeTrait, ValueArray: Sliceab
 }
 
 impl<OffsetSize: OffsetSizeTrait, ValueArray: SliceableArray + Clone + 'static> GenericListTypedIter<OffsetSize, ValueArray> {
-    pub fn new(list: GenericListArray<OffsetSize>) -> Option<Self> {
+    pub fn new(list: &GenericListArray<OffsetSize>) -> Option<Self> {
         let nulls = list.nulls().cloned();
         let values = list.values().as_any().downcast_ref::<ValueArray>()?.clone();
         let value_offsets = list.offsets().clone();

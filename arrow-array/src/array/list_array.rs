@@ -27,6 +27,7 @@ use arrow_schema::{ArrowError, DataType, FieldRef};
 use num_integer::Integer;
 use std::any::Any;
 use std::sync::Arc;
+use crate::array::typed_list_iter::GenericListTypedIter;
 
 /// A type that can be used within a variable-size array to encode offset information
 ///
@@ -397,11 +398,11 @@ impl<OffsetSize: OffsetSizeTrait> GenericListArray<OffsetSize> {
     /// assert!(iter.next().unwrap().is_none());  // Null element
     /// assert!(iter.next().unwrap().is_some()); // Third element
     /// ```
-    pub fn typed_iter<ValueArray>(&self) -> Option<crate::array::typed_list_iter::GenericListTypedIter<OffsetSize, ValueArray>>
+    pub fn typed_iter<ValueArray>(&self) -> Option<GenericListTypedIter<OffsetSize, ValueArray>>
     where
         ValueArray: crate::array::typed_list_iter::SliceableArray + Clone + 'static,
     {
-        crate::array::typed_list_iter::GenericListTypedIter::new(self.clone())
+        GenericListTypedIter::new(self)
     }
 
     #[inline]
